@@ -8,5 +8,5 @@ def watch(requrest):
         response = requests.get(CORE_SERVER_URL)
         return JsonResponse(response.json(), status=response.status_code)
     except requests.RequestException:
-        return JsonResponse({"error": "Failed to connect to the first server", "details": str(requests.RequestException)}, status=500)
+        return JsonResponse({"error": "Core server connect lost", "details": str(requests.RequestException)}, status=500)
         
