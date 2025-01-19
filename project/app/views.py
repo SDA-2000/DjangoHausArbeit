@@ -60,6 +60,9 @@ def registration(request):
 
             new_user.save()
             return redirect(reverse('login'))
+        else:
+            data = {"reg_form" : reg_form}
+            return render(request, 'register.html', data)
     else:
         reg_form = Register()
         data = {"reg_form" : reg_form}
