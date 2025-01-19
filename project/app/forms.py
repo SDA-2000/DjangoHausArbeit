@@ -31,7 +31,39 @@ class Register(forms.ModelForm):
             raise forms.ValidationError('This e-mail is registered on another account!')
         return email
 
-    
+class Change(forms.ModelForm):
+    password = forms.CharField(label="Password", widget=forms.PasswordInput)
+    password_conf = forms.CharField(label="Confim password", widget=forms.PasswordInput)
 
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name')
+
+    def clean(self): 
+        cleaned_data = super().clean()
+        password = cleaned_data.get('password')
+        password_conf = cleaned_data.get('password_conf')
+
+        if password and password_conf and password != password_conf:
+            raise forms.ValidationError('Unmatching passwords!')
+        
+        return cleaned_data
+
+
+class Login(forms.Form):
+    username = forms.CharField(label="Username")
+    password = forms.CharField(label="Password", widget=forms.PasswordInput)
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        password = cleaned_data.get('password')
+
+
+        if not User.objects.filter(username=username).exists():
+            raise ValidationError("Пользователь с таким именем не существует.")
+        
+        return cleaned_data
+    
 class NameForm(forms.Form):
     your_name = forms.CharField(label="Your name", max_length=100)
