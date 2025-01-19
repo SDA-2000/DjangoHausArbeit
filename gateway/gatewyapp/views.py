@@ -3,22 +3,10 @@ import requests
 
 CORE_SERVER_URL = 'http://0.0.0.0:9283'
 
-def watch(requrest, subpath):
-    core_endp = f"{CORE_SERVER_URL}/{subpath}"
-    method = requests.method
-    data = requests.body
-
-    headers = {
-        "Content-Type": request.headers.get("Content-Type", "application/json"),
-    }
-
+def watch(requrest):
     try:
-        # Перенаправляем запрос на Core-сервер
-        response = requests.request(method, core_url, data=data, headers=headers)
-
-        # Возвращаем ответ от Core-сервера клиенту
-        return HttpResponse(response.content, status=response.status_code, content_type=response.headers['Content-Type'])
-    except requests.exceptions.RequestException as e:
-        # Обработка ошибок соединения с Core-сервером
-        return JsonResponse({"error": "Не удалось подключиться к Core-серверу", "details": str(e)}, status=502)
+        response = requests.get(CORE_SERVER_URL)
+        return JsonResponse(response.json(), status=response.status_code)
+    except requests.RequestException as e:
+        return JsonResponse({"error": "Failed to connect to the first server", "details": str(e)}, status=500)
         
