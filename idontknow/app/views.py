@@ -1,4 +1,6 @@
 from django.http import JsonResponse
 import requests
 
-# Create your views here.
+def send(request): 
+    return JsonResponse({"message" : "English or Spanish?"})
+    
