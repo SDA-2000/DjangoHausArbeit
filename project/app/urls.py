@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.get_endp, name = 'guest'),
+    path('json', views.json),
     path('me', views.get2_endp_crud_read),
     path('accounts/login/', views.login, name='login'),
     path('accounts/registration', views.registration),

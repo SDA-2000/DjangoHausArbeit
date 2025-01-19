@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .forms import NameForm, Register, Login, Change
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
@@ -25,6 +25,9 @@ def get_endp(request):
         
         if form.is_valid():
             return render(request, "apply.html", data)
+
+def json(request):
+    return JsonResponse({"msg" : "Hello World!"})
     
 def get2_endp_crud_read(request, username = ''):
     if request.method == 'GET':
