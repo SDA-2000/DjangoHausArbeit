@@ -1,56 +1,22 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import NameForm, Register, Login, Change
+from .forms import Register, Change
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
 
-def get_endp(request):
-
-    if request.method == 'GET':
-        form = NameForm()
-
-        data = {"form" : form} 
+def red(request):
+    return redirect(reverse('profile', kwargs={'username' : User.objects.get(username='sda')}))
     
-        return render(request, 'form.html', data)
-
-    if request.method == 'POST':
-
-        form = NameForm(request.POST)
-
-        your_name = request.POST['your_name']
-
-        data = {"your_name" : your_name}
-        
-        if form.is_valid():
-            return render(request, "apply.html", data)
-    
-def get2_endp_crud_read(request, username = ''):
+def profile(request, username = ''):
     if request.method == 'GET':
         user_prof = User.objects.get(username=username)
         users = User.objects.all()
         data = {"user_prof" : user_prof, "users" : users}
         return render(request, 'apply.html', data)
 
-def login(request):
-    if request.method == "POST":
-        log_form = Login(request.POST)
-        if log_form.is_valid():
-            username = log_form.cleaned_data.get('username')
-            password = log_form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                return redirect(f'../profile/{username}')
-            else:
-                log_form.add_error(None, 'Invalid username or password')
-    else:
-        log_form = Login()
-        data = {"log_form" : log_form}
-        return render(request, 'login.html', data)
-
-
-def registration(request):
+def add_user(request, username: str):
     if request.method == "POST":
         reg_form = Register(request.POST)
         if reg_form.is_valid():
@@ -59,14 +25,14 @@ def registration(request):
             data = {"new_user" : new_user}
 
             new_user.save()
-            return redirect(reverse('login'))
+            return redirect(reverse('profile', kwargs={'username' : User.objects.get(username=username)}))
         else:
             data = {"reg_form" : reg_form}
-            return render(request, 'register.html', data)
+            return render(request, 'add_user.html', data)
     else:
         reg_form = Register()
         data = {"reg_form" : reg_form}
-        return render(request, 'register.html', data)
+        return render(request, 'add_user.html', data)
 
 def change_user_data(request, username: str, change_user: str):
     user = User.objects.get(username=change_user)

@@ -17,5 +17,5 @@
             {% endif %}
     {% endfor %} 
     {% endif %}
-<a href = '{% url "login"%}'>Log Out</a>
+    <a href = {% url 'add' user_prof.get_username%}>Add user</a>
 {% endblock %}
