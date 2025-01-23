@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-_ajv5q(b8foq&^yan-cef6xkputqjo#6xpzq4bdz0xfli*0v7p
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CORE_SERVER_URL = 'http://127.0.0.1:8000/'
 
 
 # Application definition
